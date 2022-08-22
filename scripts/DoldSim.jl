@@ -12,6 +12,8 @@ using DelimitedFiles
 # employ Dold's code which is a mixed Eulerian-Lagrangian solver
 # which can model waves up to the point of surface reconnection. See 
 # Dold (1992)
+#
+# Rewritten in Julia by Aidan Blaser (2022)
 #---------------------------------------
 # We wish to resolve: 
 # Geometry: Wave height, slope, curvature 
