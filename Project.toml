@@ -1,0 +1,14 @@
+name = "PacketDrift"
+authors = ["AidanBlaser"]
+
+[deps]
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+DifferentialEquations = "0c46a032-eb83-5123-abaf-570d42b7fbaa"
+DrWatson = "634d3b9d-ee7a-5ddf-bec9-22491ea816e1"
+FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"
+Measurements = "eff96d63-e80a-5855-80a2-b1b0885c5ab7"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+
+[compat]
+DrWatson = "2.9.1"
+julia = "1.7.3"
