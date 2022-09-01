@@ -6,7 +6,7 @@
       common /profil/ x(niv),y(niv),f(niv),po(niv),po1(niv),
      *					po2(niv), 
      *                 gty,h,t,ym,enk,enp,ent,en0,dt,dtl,En,
-     *                 n,ndtn,uv,lbd,mbd, eps, BW, C,eps0,BWo,k
+     *                 n,ndtn,uv,lbd,mbd,BW,eps,BWo, C,eps0,k
       CHARACTER(LEN=20) :: fname
 	  t=0.d0
 	  n=niv

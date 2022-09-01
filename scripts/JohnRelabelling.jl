@@ -22,9 +22,23 @@ for i ∈ 1:(length(t)-2)
 end
 
 # estimate z_w? Assume w = x(t=0)
-zw = copy(z);
+zw = zeros(length(t),length(x)-1) .+ im;
 for i ∈ 1:length(x)-1
-    zw[:,i] = (z[:,i+1]) 
+    zw[:,i] = (z[:,i+1]- z[:,i])./ (x[i+1]-x[i])
+end 
+
+# estimate r(w,t)
+r = (z̈[:,1:end-1] .+ 0 .*im*g)./(im.*zw[1:end-2,:]);
+
+plot(r[2,:])
+
+@gif for i ∈ 1:length(t)-2
+    time = round(T.*t[i],digits=3);
+    plot(r[i,:],xlims=(9.4-g,10.25-g),ylims=(-0.4,0.4),
+    xlabel="Re[r(w,t)]",ylabel="Im[r(w,t)]",
+    title="S = $S, Δ = $D, t = $time s",
+    label = "r(w,t)")
+end
 
 
 plot(z[200,:])
