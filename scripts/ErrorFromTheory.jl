@@ -64,6 +64,7 @@ MSE_x,MSE_y = MSEtheory(S_range);
 
 plot(S_range,MSE_x,xlabel=L"S",ylabel = L"\mathrm{MSE} \quad(m^2)",
 title="Mean Square Error Averaged over 1 Period",
-label = "MSE in x",framestyle= :box)
+label = "MSE in x",framestyle= :box,
+legend = :topleft)
 plot!(S_range,MSE_y,label="MSE in y")
 savefig("../../Plots/MSE")
