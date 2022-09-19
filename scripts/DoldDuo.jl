@@ -11,38 +11,28 @@ using ForwardDiff
 using LaTeXStrings
 using Printf
 
-function monoSim(S;k=1,plotting = nothing)
+function duoSim(S1,S2;k1=1,k2=2,plotting = nothing)
 directory = pwd();
 # Adjustable Parameters
 g = 9.81; # acc due to gravity. make sure Dold is set to same value
-ω = sqrt(g*k);
-tl = 2π / ω ; # length of simulation (seconds)
+ω1 = sqrt(g*k1);
+ω2 = sqrt(g*k2);
+keff = lcm(k1,k2);
+tl = keff*max(2π / ω1,2π / ω2) ; # length of simulation (seconds)
 N = 512; # Number of surface points
-ML = 2π*k; # Physical length of channel
+ML = max(2π*k1,2π*k2); # Physical length of channel
 x =collect( 0 : ML/N : (ML) * (1 - 1/N)); # domain
 BW = 0; # bandwidth (set to 0 for no focusing packet)
 wl = ML; # wl parameter is used in Dold code
 
 # Define surface displacement eta. Linear dispersive focusing 
 eta1 = zeros(length(x),1);
-eta1 = (S/k).*sin.(k.*x);
+eta1 = (S1/k1).*sin.(k1.*x) + (S2/k2).*sin.(k2.*x);
 #filter = exp.(-(x.-5).^2 ./ (5^2));
 eta2 = eta1;
 
 
-## we now want to find the velocity potential
-Fs = 1 / ( abs(x[2] - x[1]) ); # define sampling frequency in space
-function positiveFFT(x,Fs)
-    N=length(x); 
-    k=collect(0:N-1); 
-    T=N/Fs; 
-    freq=k/T; #create the frequency range 
-    X=FFTW.fft(x)/N; # normalize the data
-    cutOff = Int(ceil(N/2)); 
-    X = X[1:cutOff]; 
-    freq = freq[1:cutOff];
-    return X, freq
-end
+
 out,freq = positiveFFT(eta2, Fs); #perform fft
 # check fft on eta
 eta = zeros(1, length(x)); 
@@ -66,8 +56,8 @@ x_f = x; # shift x-axis so it goes from 0 to wl
 y_f = eta;
 f_f = phi;
 
-plot( x_f, [y_f',f_f'], xlabel='x', label=["η" "ϕ"],
-        legendfontsize=18)
+# plot( x_f, [y_f',f_f'], xlabel='x', label=["η" "ϕ"],
+ #       legendfontsize=18)
 #set(gca, 'fontsize', 22)
 #l1 = legend('$\eta$' , '$\phi$');
 #set(l1, 'interpreter' , 'latex')
@@ -163,11 +153,10 @@ for i ∈ 1:length(x)
     xdev[:,i] = x_o[:,i] .- w[i];
 end
 
-k = ω^2 / g;
 
 cd(directory)
 
-return x_o,y_o,u,v,t,x,w,xdev,ω,g,k;
+return x_o,y_o,u,v,t,x,w,xdev,ω1,ω2,g;
 end
 
 function grad(vector,points)
@@ -178,4 +167,18 @@ function grad(vector,points)
     dvdp[1] = (vector[2]-vector[1])/(points[2]-points[1]);
     dvdp[end] = (vector[end]-vector[end-1])/(points[end]-points[end-1]);
     return dvdp
+end
+
+## we now want to find the velocity potential
+Fs = 1 / ( abs(x[2] - x[1]) ); # define sampling frequency in space
+function positiveFFT(x,Fs)
+    N=length(x); 
+    k=collect(0:N-1); 
+    T=N/Fs; 
+    freq=k./T; #create the frequency range 
+    X=FFTW.fft(x)/N; # normalize the data
+    cutOff = Int(ceil(N/2)); 
+    X = X[1:cutOff]; 
+    freq = freq[1:cutOff];
+    return X, freq
 end
