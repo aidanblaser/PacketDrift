@@ -120,16 +120,16 @@ tl = (xb+20)*D;
 
 # Make sure you're in right directory
 cd(projectdir()) 
-cd("scripts/dold_files")
+cd("scripts/dold_files/")
 
-rm("xc.txt")
-rm("yc.txt")
-rm("fc.txt")
-rm("bw.txt")
-rm("wl.txt")
-rm("S.txt")
-rm("bw0.txt")
-rm("S0.txt")
+rm("xc.txt",force= true)
+rm("yc.txt",force=true)
+rm("fc.txt",force=true)
+rm("bw.txt",force=true)
+rm("wl.txt",force=true)
+rm("S.txt",force=true)
+rm("bw0.txt",force=true)
+rm("S0.txt",force=true)
 # delete k.txt
 writedlm("xc.txt",x_f)
 writedlm("yc.txt", y_f)
